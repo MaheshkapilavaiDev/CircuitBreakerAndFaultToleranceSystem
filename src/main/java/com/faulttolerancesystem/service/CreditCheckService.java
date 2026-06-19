@@ -34,17 +34,23 @@ public class CreditCheckService {
                 () -> apiService.callCreditApi());
     }
 
-    public String creditFallback(
-            Exception ex) {
+    public CompletableFuture<String> creditFallback(
+    		Throwable  ex) {
 
-    FailureAudit audit = new FailureAudit();
+   // FailureAudit audit = new FailureAudit();
 
-    audit.setServiceName("Credit Service");
-    audit.setErrorMessage(ex.getMessage());
-    audit.setFailureTime(LocalDateTime.now());
+    //audit.setServiceName("Credit Service");
+   // audit.setErrorMessage(ex.getMessage());
+    //audit.setFailureTime(LocalDateTime.now());
 
-    repository.save(audit);
+   // System.out.println("Fallback Executed");
+   // repository.save(audit);
 
-    return "Fallback Response Returned";
+   // return "Fallback Response Returned";
+    	 System.out.println("Fallback Executed");
+
+    	    return CompletableFuture.completedFuture(
+    	            "Credit Service Temporarily Unavailable");
 }
+    
 }
