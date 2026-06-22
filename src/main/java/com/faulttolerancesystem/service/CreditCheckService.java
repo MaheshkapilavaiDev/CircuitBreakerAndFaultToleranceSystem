@@ -17,40 +17,36 @@ import io.github.resilience4j.timelimiter.annotation.TimeLimiter;
 @Service
 public class CreditCheckService {
 
-    @Autowired
-    private ExternalApiService apiService;
-    
-    @Autowired
-    private FailureAuditRepository repository;
+	@Autowired
+	private ExternalApiService apiService;
 
-    @CircuitBreaker(
-            name = "creditService",
-            fallbackMethod = "creditFallback")
-    @Retry(name = "creditService")
-    @TimeLimiter(name = "creditService")
-    public CompletableFuture<String> getCreditScore() {
+	@Autowired
+	private FailureAuditRepository repository;
 
-        return CompletableFuture.supplyAsync(
-                () -> apiService.callCreditApi());
-    }
+	@CircuitBreaker(name = "creditService", fallbackMethod = "creditFallback")
+	@Retry(name = "creditService")
+	@TimeLimiter(name = "creditService")
+	public CompletableFuture<String> getCreditScore() {
 
-    public CompletableFuture<String> creditFallback(
-    		Throwable  ex) {
+		return CompletableFuture.supplyAsync(() -> apiService.callCreditApi());
+	}
 
-   // FailureAudit audit = new FailureAudit();
+	public CompletableFuture<String> creditFallback(Throwable ex) {
 
-    //audit.setServiceName("Credit Service");
-   // audit.setErrorMessage(ex.getMessage());
-    //audit.setFailureTime(LocalDateTime.now());
+		/*
+		 * FailureAudit audit = new FailureAudit();
+		 * 
+		 * audit.setServiceName("Credit Service");
+		 * audit.setErrorMessage(ex.getMessage());
+		 * audit.setFailureTime(LocalDateTime.now());
+		 * 
+		 * System.out.println("Fallback Executed"); repository.save(audit);
+		 * 
+		 * return "Fallback Response Returned";
+		 */
+		System.out.println("Fallback Executed");
 
-   // System.out.println("Fallback Executed");
-   // repository.save(audit);
+		return CompletableFuture.completedFuture("Credit Service Temporarily Unavailable");
+	}
 
-   // return "Fallback Response Returned";
-    	 System.out.println("Fallback Executed");
-
-    	    return CompletableFuture.completedFuture(
-    	            "Credit Service Temporarily Unavailable");
-}
-    
 }
