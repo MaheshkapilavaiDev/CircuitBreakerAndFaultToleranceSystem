@@ -1,4 +1,4 @@
-package com.faulttolerancesystem.CircuitBreakerAndFaultToleranceSystem;
+package com.faulttolerancesystem;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
